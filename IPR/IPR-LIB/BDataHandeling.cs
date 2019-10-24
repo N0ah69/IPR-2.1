@@ -5,16 +5,18 @@ using System.Threading;
 
 namespace IPR_LIB
 {
-    public class BDataHandler : Updatable
+    public class BDataHandler
     {
         public List<string> Devices = new List<string>();
         BLE bleBike;
         BLE bleHeart;
-        private int speed;
-        private int distance;
-        private int acumilatedPower;
-        private int currentPower;
+        private int Rpm;
         public bool updated = false;
+        private int lastKnownmTime;
+        private int dCycles;
+
+        public int rCycles { get; private set; }
+        public int Time { get; private set; }
 
         public bool StartConnection()
         {
@@ -72,17 +74,23 @@ namespace IPR_LIB
             switch (dat[4])
             {
                 case 0x10:
-                    speed = dat[9] + dat[8];
-                    distance = dat[7];
+                    AddTimeElapsed(dat[6]);
                     break;
-                case 0x14: break;
                 case 0x19:
-                    acumilatedPower += dat[8] + dat[7];
-                    currentPower = dat[10] + dat[9];
+                    Rpm = dat[6];
                     break;
             }
             updated = true;
         }
+
+        private void AddTimeElapsed(int v)
+        {
+            if (Time < lastKnownmTime) rCycles++;
+            Rpm = rCycles * 255 + v;
+            lastKnownmTime = v;
+        }
+
+       
         public void setResistance(int percentage)
         {
 
@@ -99,11 +107,12 @@ namespace IPR_LIB
 
             bleBike.WriteCharacteristic("6e40fec3-b5a3-f393-e0a9-e50e24dcca9e", output);
         }
+        
 
-        public (int, int, int, int) Update()
+        public (int, int) Update()
         {
             updated = false;
-            return (speed, distance, acumilatedPower, currentPower);
+            return (Rpm, Time);
         }
     }
 }

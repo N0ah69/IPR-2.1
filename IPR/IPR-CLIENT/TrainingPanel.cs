@@ -7,7 +7,7 @@ namespace IPR_CLIENT
 {
     public partial class TrainingPanel : Form
     {
-        (int, int, int, int) a;
+        (int, int) a;
         BDataHandler e = new BDataHandler();
         public TrainingPanel()
         {
@@ -18,10 +18,10 @@ namespace IPR_CLIENT
         }
         private void doWork()
         {
-            while (true) { if (e.updated) a = e.Update(); update(); Thread.Sleep(1); }
+            while (true) { if (e.updated) a = e.Update(); UpdatGUI(); Thread.Sleep(1); }
         }
 
-        private void update()
+        private void UpdatGUI()
         {
 
             this.BeginInvoke((Action)delegate ()
@@ -34,6 +34,5 @@ namespace IPR_CLIENT
         {
             new Thread(new ThreadStart(doWork)).Start();
         }
-
     }
 }
