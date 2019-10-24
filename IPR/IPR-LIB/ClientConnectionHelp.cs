@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace IPR_LIB
 {
@@ -30,9 +31,38 @@ namespace IPR_LIB
 
             
              
-            string connected = "connected client!!!Hello world!";
+            string connected = "get!!!connected//TextFile1.txt";
             byte[] buffer = Encoding.ASCII.GetBytes(connected);
             _clientSocket.Send(buffer);
+
+        }
+
+        private void ReceiveMessage()
+        {
+
+            Thread receivemessages = new Thread(() =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        byte[] receivedBuffer = new byte[1024];
+                        int rec = _clientSocket.Receive(receivedBuffer);
+                        byte[] data = new byte[rec];
+
+                        Array.Copy(receivedBuffer, data, rec);
+                        string serverresponse = Encoding.ASCII.GetString(data);
+                        string[] prefixwithmessage = serverresponse.Split(new[] { "!!!" }, StringSplitOptions.None);
+                        Console.WriteLine(serverresponse);
+                    }
+                    catch (Exception e)
+                    {
+                        
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            });
+            receivemessages.Start();
 
         }
 

@@ -61,7 +61,14 @@ namespace IPR_SERVER
                     SendResponse(CSocket, "ok");
                     break;
                 case "get":
-
+                    string[] filename = data.Split(new[] { "//" }, StringSplitOptions.None);
+                    string realfilename = $"{getPath()}Logs/{filename[1]}";
+                    string filetext = System.IO.File.ReadAllText(realfilename);
+                    SendResponse(CSocket, filetext);
+                    break;
+                case "locate":
+                    SendResponse(CSocket, getLogs().ToString());
+                    Console.WriteLine(getLogs().ToString());
                     break;
                 case "save":
                     dynamic json = JsonConvert.DeserializeObject(data);
@@ -106,6 +113,29 @@ namespace IPR_SERVER
             string Startsplit = startupPath.Substring(0, startupPath.LastIndexOf("bin"));
             string split = Startsplit.Replace(@"\", "/");
             return split;
+        }
+
+        public static string getLogs()
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                string[] arraypaths = Directory.GetFiles(getPath() + "Logs/");
+                foreach (string path in arraypaths)
+                {
+                    string filename = Path.GetFileName(path);
+
+                    sb.AppendLine(filename);
+                }
+                return sb.ToString();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return e.Message;
+            }
+
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using IPR_LIB;
@@ -23,6 +24,8 @@ namespace IPR_CLIENT
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
             
+
+
 
         }
     }
