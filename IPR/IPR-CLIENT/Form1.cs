@@ -30,7 +30,7 @@ namespace IPR_CLIENT
                 var age = int.Parse(TB_Leeftijd.Text);
                 var weight = int.Parse(TB_Gewicht.Text);
                 var gender = getCheckedButton();
-                p = new Patient(name, age, weight);
+                p = new Patient(name, age, weight, gender);
                 return true;
             }
             catch
