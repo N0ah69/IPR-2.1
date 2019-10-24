@@ -26,6 +26,9 @@ namespace IPR_CLIENT
 
         private void button1_Click(object sender, EventArgs e)
         {
+            ClientConnectionHelp CCH = new ClientConnectionHelp();
+            CCH.LoopConnect();
+            CCH.SendMesage("save!!!" + p);
             this.Close();
         }
     }
