@@ -13,6 +13,9 @@ namespace IPR_CLIENT
         private Patient currentPatient;
         (int, int, int) a;
         BikeHandler Bhandler = new BikeHandler();
+        private bool warmedup;
+        private bool testStarted;
+        private bool coolingDown;
 
         public TrainingPanel()
         {
@@ -27,12 +30,14 @@ namespace IPR_CLIENT
         }
         private void doWork()
         {
+            TestStatLabel.Text = "Warm-Up";
             while (true)
             {
                 if (Bhandler.updated)
                 {
                     a = Bhandler.Update();
                     UpdateGUI();
+                    SpeedHandler();
                     //for Vo2
                     currentPatient.CurrentRPM = a.Item1;
                     currentPatient.CurrentBPM = a.Item2;
@@ -42,9 +47,29 @@ namespace IPR_CLIENT
                     currentPatient.Resistance.Add(Bhandler.CurrentResistance);
                     currentPatient.HeartRate.Add(Bhandler.BPM);
                     currentPatient.RPMHistory.Add(Bhandler.Rpm);
+
+                    if (Bhandler.Time == 120 && !warmedup)
+                    {
+                        TestStatLabel.Text = "Testing";
+                        Bhandler.Time = 0;
+                        warmedup = true;
+                    }
+                    else if (Bhandler.Time == 240 && !testStarted)
+                    {
+                        TestStatLabel.Text = "Cooling Down";
+                        Bhandler.Time = 0;
+                        testStarted = true;
+                    }
+                    else if (Bhandler.Time == 60 && !coolingDown) 
+                    {
+                        TestStatLabel.Text = "Test Finished";
+                        coolingDown = true;
+                        break;
+                    }
                 }
                 Thread.Sleep(1);
             }
+            new Results().Show();
         }
 
         private void UpdateGUI()
@@ -54,6 +79,7 @@ namespace IPR_CLIENT
                 speed.Text = a.Item1.ToString();
                 HR.Text = a.Item2.ToString();
                 Voltage.Text = a.Item3.ToString();
+                TimeLabel.Text = Bhandler.FormatedTime();
             });
         }
 

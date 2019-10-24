@@ -70,9 +70,9 @@ namespace IPR_LIB
                 return 0.65 - (Age - 65) * 0.006;
             }
         }
-        public double Vo2Calculator(Config.Gender g)
+        public double Vo2Calculator()
         {
-            if (g == Config.Gender.Female)
+            if (this.Gender == Config.Gender.Female)
             {
                 double workload = 0;
                 foreach (double voltage in Voltages)

@@ -15,8 +15,8 @@ namespace IPR_LIB
         public bool updated = false;
         private int lastKnownmTime { get; set; }
         public int TimeCycles { get; set; }
-        public int Time { get; private set; }
-        public int BPM { get; private set; }
+        public int Time { get;  set; }
+        public int BPM { get;  set; }
 
         public bool StartConnection()
         {
@@ -116,6 +116,15 @@ namespace IPR_LIB
         {
             updated = false;
             return (Rpm, Time, voltage);
+        }
+
+        public string FormatedTime() 
+        {
+            double totalsec = Time / 4;
+
+            int sec = (int)totalsec % 60; ;
+            int min = (int)totalsec/60;
+            return $"{min}:{sec}";
         }
     }
 }

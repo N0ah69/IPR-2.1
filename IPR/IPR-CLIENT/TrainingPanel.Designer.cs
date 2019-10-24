@@ -31,6 +31,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.B_start = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.C_Data = new LiveCharts.WinForms.CartesianChart();
+            this.TimeLabel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.StatusLabel = new System.Windows.Forms.Label();
             this.Voltage = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -40,9 +43,8 @@
             this.speed = new System.Windows.Forms.Label();
             this.TB_Bike = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label5 = new System.Windows.Forms.Label();
-            this.TimeLabel = new System.Windows.Forms.Label();
-            this.C_Data = new LiveCharts.WinForms.CartesianChart();
+            this.label6 = new System.Windows.Forms.Label();
+            this.TestStatLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,6 +69,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.TestStatLabel);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.C_Data);
             this.groupBox1.Controls.Add(this.TimeLabel);
             this.groupBox1.Controls.Add(this.label5);
@@ -83,6 +87,34 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TestData";
+            // 
+            // C_Data
+            // 
+            this.C_Data.Location = new System.Drawing.Point(6, 218);
+            this.C_Data.Name = "C_Data";
+            this.C_Data.Size = new System.Drawing.Size(686, 329);
+            this.C_Data.TabIndex = 9;
+            this.C_Data.Text = "cartesianChart1";
+            // 
+            // TimeLabel
+            // 
+            this.TimeLabel.AutoSize = true;
+            this.TimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeLabel.Location = new System.Drawing.Point(309, 53);
+            this.TimeLabel.Name = "TimeLabel";
+            this.TimeLabel.Size = new System.Drawing.Size(150, 55);
+            this.TimeLabel.TabIndex = 8;
+            this.TimeLabel.Text = "00:00";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(309, 29);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 24);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Time:";
             // 
             // StatusLabel
             // 
@@ -162,33 +194,25 @@
             this.TB_Bike.Size = new System.Drawing.Size(73, 20);
             this.TB_Bike.TabIndex = 4;
             // 
-            // label5
+            // label6
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(327, 29);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 24);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Time:";
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(462, 29);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 24);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Status:";
             // 
-            // TimeLabel
+            // TestStatLabel
             // 
-            this.TimeLabel.AutoSize = true;
-            this.TimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLabel.Location = new System.Drawing.Point(386, 53);
-            this.TimeLabel.Name = "TimeLabel";
-            this.TimeLabel.Size = new System.Drawing.Size(150, 55);
-            this.TimeLabel.TabIndex = 8;
-            this.TimeLabel.Text = "00:00";
-            // 
-            // C_Data
-            // 
-            this.C_Data.Location = new System.Drawing.Point(6, 218);
-            this.C_Data.Name = "C_Data";
-            this.C_Data.Size = new System.Drawing.Size(686, 329);
-            this.C_Data.TabIndex = 9;
-            this.C_Data.Text = "cartesianChart1";
+            this.TestStatLabel.AutoSize = true;
+            this.TestStatLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestStatLabel.Location = new System.Drawing.Point(459, 53);
+            this.TestStatLabel.Name = "TestStatLabel";
+            this.TestStatLabel.Size = new System.Drawing.Size(233, 37);
+            this.TestStatLabel.TabIndex = 11;
+            this.TestStatLabel.Text = "Waiting to start";
             // 
             // TrainingPanel
             // 
@@ -224,5 +248,7 @@
         private LiveCharts.WinForms.CartesianChart C_Data;
         private System.Windows.Forms.Label TimeLabel;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label TestStatLabel;
+        private System.Windows.Forms.Label label6;
     }
 }
