@@ -28,33 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.CB_Bikes = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.B_start = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.p = new System.Windows.Forms.Label();
-            this.ap = new System.Windows.Forms.Label();
-            this.distance = new System.Windows.Forms.Label();
+            this.C_Data = new LiveCharts.WinForms.CartesianChart();
+            this.TimeLabel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.StatusLabel = new System.Windows.Forms.Label();
+            this.Voltage = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.HR = new System.Windows.Forms.Label();
             this.speed = new System.Windows.Forms.Label();
+            this.TB_Bike = new System.Windows.Forms.TextBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.label6 = new System.Windows.Forms.Label();
+            this.TestStatLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // CB_Bikes
-            // 
-            this.CB_Bikes.FormattingEnabled = true;
-            this.CB_Bikes.Location = new System.Drawing.Point(12, 38);
-            this.CB_Bikes.Name = "CB_Bikes";
-            this.CB_Bikes.Size = new System.Drawing.Size(170, 21);
-            this.CB_Bikes.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 22);
+            this.label1.Location = new System.Drawing.Point(-2, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.Size = new System.Drawing.Size(195, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Select A Bike:";
+            this.label1.Text = "voer de laatste vijf cijfers van de fiets in:";
             // 
             // B_start
             // 
@@ -68,62 +69,160 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.p);
-            this.groupBox1.Controls.Add(this.ap);
-            this.groupBox1.Controls.Add(this.distance);
+            this.groupBox1.Controls.Add(this.TestStatLabel);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.C_Data);
+            this.groupBox1.Controls.Add(this.TimeLabel);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.StatusLabel);
+            this.groupBox1.Controls.Add(this.Voltage);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.HR);
             this.groupBox1.Controls.Add(this.speed);
             this.groupBox1.Location = new System.Drawing.Point(221, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(567, 426);
+            this.groupBox1.Size = new System.Drawing.Size(705, 547);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TestData";
             // 
-            // p
+            // C_Data
             // 
-            this.p.AutoSize = true;
-            this.p.Location = new System.Drawing.Point(140, 99);
-            this.p.Name = "p";
-            this.p.Size = new System.Drawing.Size(35, 13);
-            this.p.TabIndex = 3;
-            this.p.Text = "NULL";
+            this.C_Data.Location = new System.Drawing.Point(6, 218);
+            this.C_Data.Name = "C_Data";
+            this.C_Data.Size = new System.Drawing.Size(686, 329);
+            this.C_Data.TabIndex = 9;
+            this.C_Data.Text = "cartesianChart1";
             // 
-            // ap
+            // TimeLabel
             // 
-            this.ap.AutoSize = true;
-            this.ap.Location = new System.Drawing.Point(140, 75);
-            this.ap.Name = "ap";
-            this.ap.Size = new System.Drawing.Size(35, 13);
-            this.ap.TabIndex = 2;
-            this.ap.Text = "NULL";
+            this.TimeLabel.AutoSize = true;
+            this.TimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeLabel.Location = new System.Drawing.Point(309, 53);
+            this.TimeLabel.Name = "TimeLabel";
+            this.TimeLabel.Size = new System.Drawing.Size(150, 55);
+            this.TimeLabel.TabIndex = 8;
+            this.TimeLabel.Text = "00:00";
             // 
-            // distance
+            // label5
             // 
-            this.distance.AutoSize = true;
-            this.distance.Location = new System.Drawing.Point(140, 53);
-            this.distance.Name = "distance";
-            this.distance.Size = new System.Drawing.Size(35, 13);
-            this.distance.TabIndex = 1;
-            this.distance.Text = "NULL";
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(309, 29);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 24);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Time:";
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.AutoSize = true;
+            this.StatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StatusLabel.Location = new System.Drawing.Point(16, 127);
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(647, 124);
+            this.StatusLabel.TabIndex = 6;
+            this.StatusLabel.Text = "Begin met fietsen. Probeer de RPM op 60 te houden,\r\n want het word zwaarder!\r\n\r\n\r" +
+    "\n";
+            // 
+            // Voltage
+            // 
+            this.Voltage.AutoSize = true;
+            this.Voltage.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Voltage.Location = new System.Drawing.Point(203, 90);
+            this.Voltage.Name = "Voltage";
+            this.Voltage.Size = new System.Drawing.Size(100, 37);
+            this.Voltage.TabIndex = 5;
+            this.Voltage.Text = "NULL";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(6, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(135, 37);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Voltage:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(6, 53);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(146, 37);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Hartslag:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(95, 37);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "RPM:";
+            // 
+            // HR
+            // 
+            this.HR.AutoSize = true;
+            this.HR.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HR.Location = new System.Drawing.Point(203, 53);
+            this.HR.Name = "HR";
+            this.HR.Size = new System.Drawing.Size(100, 37);
+            this.HR.TabIndex = 1;
+            this.HR.Text = "NULL";
             // 
             // speed
             // 
             this.speed.AutoSize = true;
-            this.speed.Location = new System.Drawing.Point(140, 26);
+            this.speed.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.speed.Location = new System.Drawing.Point(203, 16);
             this.speed.Name = "speed";
-            this.speed.Size = new System.Drawing.Size(35, 13);
+            this.speed.Size = new System.Drawing.Size(100, 37);
             this.speed.TabIndex = 0;
             this.speed.Text = "NULL";
+            // 
+            // TB_Bike
+            // 
+            this.TB_Bike.Location = new System.Drawing.Point(13, 39);
+            this.TB_Bike.Name = "TB_Bike";
+            this.TB_Bike.Size = new System.Drawing.Size(73, 20);
+            this.TB_Bike.TabIndex = 4;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(462, 29);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 24);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Status:";
+            // 
+            // TestStatLabel
+            // 
+            this.TestStatLabel.AutoSize = true;
+            this.TestStatLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestStatLabel.Location = new System.Drawing.Point(459, 53);
+            this.TestStatLabel.Name = "TestStatLabel";
+            this.TestStatLabel.Size = new System.Drawing.Size(233, 37);
+            this.TestStatLabel.TabIndex = 11;
+            this.TestStatLabel.Text = "Waiting to start";
             // 
             // TrainingPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(938, 571);
+            this.Controls.Add(this.TB_Bike);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.B_start);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CB_Bikes);
             this.Name = "TrainingPanel";
             this.Text = "TrainingPanel";
             this.groupBox1.ResumeLayout(false);
@@ -134,14 +233,22 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ComboBox CB_Bikes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button B_start;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label p;
-        private System.Windows.Forms.Label ap;
-        private System.Windows.Forms.Label distance;
+        private System.Windows.Forms.Label HR;
         private System.Windows.Forms.Label speed;
+        private System.Windows.Forms.TextBox TB_Bike;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label Voltage;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label StatusLabel;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private LiveCharts.WinForms.CartesianChart C_Data;
+        private System.Windows.Forms.Label TimeLabel;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label TestStatLabel;
+        private System.Windows.Forms.Label label6;
     }
 }

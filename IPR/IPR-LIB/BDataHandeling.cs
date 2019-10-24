@@ -5,41 +5,36 @@ using System.Threading;
 
 namespace IPR_LIB
 {
-    public class BDataHandler
+    public class BikeHandler
     {
-        public List<string> Devices = new List<string>();
         BLE bleBike;
         BLE bleHeart;
-        private int Rpm;
+        private byte voltage;
+        public double CurrentResistance;
+        public int Rpm { get; private set; }
         public bool updated = false;
-        private int lastKnownmTime;
-        private int dCycles;
-
-        public int rCycles { get; private set; }
-        public int Time { get; private set; }
+        private int lastKnownmTime { get; set; }
+        public int TimeCycles { get; set; }
+        public int Time { get;  set; }
+        public int BPM { get;  set; }
 
         public bool StartConnection()
         {
-            bleBike = new BLE();
-            bleHeart = new BLE();
-            Thread.Sleep(1000); // We need some time to list available devices
-
-            // List available devices
-            List<String> Devices = bleBike.ListDevices();
-            Console.WriteLine("Devices found: ");
-            foreach (var name in Devices)
+            try
             {
-                Console.WriteLine($"Device: {name}");
+                bleBike = new BLE();
+                bleHeart = new BLE();
+                Thread.Sleep(1000); // We need some time to list available devices
+                return true;
             }
-            return true;
+            catch { return false; }
         }
-
         public async void setUpBikeConection(string bike)
         {
             //string should be like "Tacx Flux 00438"
             int errorCode = 0;
             // Connecting
-            errorCode = errorCode = await bleBike.OpenDevice("Tacx Flux 00438");
+            errorCode = errorCode = await bleBike.OpenDevice("Tacx Flux " + bike);
             // __TODO__ Error check
 
             var services = bleBike.GetServices;
@@ -63,7 +58,6 @@ namespace IPR_LIB
             bleHeart.SubscriptionValueChanged += BleBike_SubscriptionValueChanged;
             await bleHeart.SubscribeToCharacteristic("HeartRateMeasurement");
         }
-
         private void BleBike_SubscriptionValueChanged(object sender, BLESubscriptionValueChangedEventArgs e)
         {
             HandlePayload(e.Data);
@@ -71,28 +65,40 @@ namespace IPR_LIB
 
         private void HandlePayload(byte[] dat)
         {
-            switch (dat[4])
+            if (dat.Length <= 4)
             {
-                case 0x10:
-                    AddTimeElapsed(dat[6]);
-                    break;
-                case 0x19:
-                    Rpm = dat[6];
-                    break;
+                BPM = dat[2];
             }
+            else
+                switch (dat[4])
+                {
+                    case 0x10:
+                        AddTimeElapsed(dat[6]);
+                        break;
+                    case 0x19:
+                        voltage = (byte)((((byte)dat[7] << 8) | ((byte)dat[8])));
+                        Rpm = dat[6];
+                        break;
+                }
             updated = true;
+        }
+
+        private void PowerAcumilated(byte b1,byte b2)
+        {
+            voltage = (byte)((((byte)b1 << 8) | ((byte)b2)));
         }
 
         private void AddTimeElapsed(int v)
         {
-            if (Time < lastKnownmTime) rCycles++;
-            Rpm = rCycles * 255 + v;
+            if (Time < lastKnownmTime) TimeCycles++;
+            Rpm = TimeCycles * 255 + v;
             lastKnownmTime = v;
         }
 
-       
-        public void setResistance(int percentage)
+    
+        public void setResistance(double percentage)
         {
+            CurrentResistance = percentage;
 
             var crc32 = new Crc32.Crc32Algorithm(0xedb88320u,
                                   0xffffffffu);
@@ -102,17 +108,23 @@ namespace IPR_LIB
             output[2] = 0x4E; // Message type
             output[3] = 0x05; // Message type
             output[4] = 0x30; // Data Type
-            output[11] = (byte)percentage;
+            output[11] = (byte)(percentage*2);
             output[12] = (byte)BitConverter.ToInt32(crc32.ComputeHash(output), 0);
-
             bleBike.WriteCharacteristic("6e40fec3-b5a3-f393-e0a9-e50e24dcca9e", output);
         }
-        
-
-        public (int, int) Update()
+        public (int, int, int) Update()
         {
             updated = false;
-            return (Rpm, Time);
+            return (Rpm, Time, voltage);
+        }
+
+        public string FormatedTime() 
+        {
+            double totalsec = Time / 4;
+
+            int sec = (int)totalsec % 60; ;
+            int min = (int)totalsec/60;
+            return $"{min}:{sec}";
         }
     }
 }
