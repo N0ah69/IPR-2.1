@@ -4,12 +4,12 @@ namespace IPR_LIB
 {
     public class Patient
     {
-        private string Name;
-        private int Age;
-        private int Weight;
-        private Config.Gender Gender;
-        private ObservableCollection<int> HeartRate;
-        private ObservableCollection<double> Resistance;
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public int Weight { get; set; }
+        public Config.Gender Gender { get; set; }
+        public ObservableCollection<int> HeartRate { get; set; }
+        public ObservableCollection<double> Resistance { get; set; }
 
         public Patient(string name, int age, int weight, Config.Gender Gender)
         {

@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 
+
 namespace IPR_CLIENT
 {
     public partial class TrainingPanel : Form

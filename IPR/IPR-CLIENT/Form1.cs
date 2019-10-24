@@ -30,7 +30,7 @@ namespace IPR_CLIENT
                 var age = int.Parse(TB_Leeftijd.Text);
                 var weight = int.Parse(TB_Gewicht.Text);
                 var gender = getCheckedButton();
-                p = new Patient(name, age, weight);
+                p = new Patient(name, age, weight, gender);
                 return true;
             }
             catch
@@ -50,6 +50,14 @@ namespace IPR_CLIENT
 
             if (value == "man") return (Config.Gender)Enum.Parse(typeof(Config.Gender), "Male");
             else return (Config.Gender)Enum.Parse(typeof(Config.Gender), "Female");
+        }
+
+        private void DataBaseButton_Click(object sender, EventArgs e)
+        {
+            Form2 datascreen = new Form2();
+            datascreen.Show();
+            this.Hide();
+
         }
     }
 }

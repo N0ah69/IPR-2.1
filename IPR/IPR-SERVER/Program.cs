@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using IPR_LIB;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,15 @@ namespace IPR_SERVER
             string temp = Encoding.ASCII.GetString(dataBuffer);
             string[] Info = temp.Split(new string[1] { "!!!" }, StringSplitOptions.None);
             string ID = Info[0];
-            string data = Info[1];
+            string data = "empty";
+            try
+            {
+                data = Info[1];
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Empty DataMessage");
+            }
             Console.WriteLine($"Received text: { data } from: { ID}");
             switch (ID)
             {
@@ -61,13 +70,12 @@ namespace IPR_SERVER
                     SendResponse(CSocket, "ok");
                     break;
                 case "get":
-                    string[] filename = data.Split(new[] { "//" }, StringSplitOptions.None);
-                    string realfilename = $"{getPath()}Logs/{filename[1]}";
+                    string realfilename = $"{getPath()}Logs/{data}";
                     string filetext = System.IO.File.ReadAllText(realfilename);
-                    SendResponse(CSocket, filetext);
+                    SendResponse(CSocket, "datarequest!!!" + filetext);
                     break;
                 case "locate":
-                    SendResponse(CSocket, getLogs().ToString());
+                    SendResponse(CSocket, "filenames!!!" + getLogs().ToString());
                     Console.WriteLine(getLogs().ToString());
                     break;
                 case "save":
