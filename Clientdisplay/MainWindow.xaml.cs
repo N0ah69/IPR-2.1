@@ -59,7 +59,6 @@ namespace Clientdisplay
         public List<double> Watt { get; set; } = new List<double>();
         private ChartValues<ObservableValue> ChartMetersTravelled { get; set; }
         private ChartValues<ObservableValue> ChartSpeedValues { get; set; }
-       private ChartValues<ObservableValue> ChartSpeedValues { get; set; }
         private ChartValues<ObservableValue> ChartRPM { get; set; }
         private ChartValues<ObservableValue> ChartBeat { get; set; }
 
@@ -269,9 +268,9 @@ namespace Clientdisplay
                 switch (message)
                 {
                     case GeneralDataMessage generalMessage:
-                        lblSpeed.Content = string.Format("Snelheid: {0} km/u", bikeSession.Speed.ToString());
-                        Speed.Add(bikeSession.Speed);
-                        speedcycle = (int)bikeSession.Speed;
+                        lblSpeed.Content = string.Format("Snelheid: {0} km/u", bikeSession.GetSpeed().ToString());
+                        Speed.Add(bikeSession.GetSpeed());
+                        speedcycle = (int)bikeSession.GetSpeed();
                         RPM.Add(bikeSession.CycleRPM);
                         spin = (int)bikeSession.CycleRPM;
                         lblDistance.Content = string.Format("Afstand afgelegd: {0} meter", bikeSession.GetMetersTravelled().ToString());
@@ -279,18 +278,10 @@ namespace Clientdisplay
                         
                         ChartSpeedValues.Add(new ObservableValue(bikeSession.GetSpeed()));
                         ChartRPM.Add(new ObservableValue(bikeSession.CycleRPM));
-                    /*    if (ChartSpeedValues.Count == 30)
-                        {
-                            ChartSpeedValues.RemoveAt(0);
-                        }
-                        else if(ChartRPM.Count == 30)
-                        {
-                            ChartRPM.RemoveAt(0);
-                        }*/
                         break;
                     case StationaryDataMessage stationaryMessage:
-                        lblVoltage.Content = string.Format("Voltage: {0} Watt", bikeSession.Voltage.ToString());
-                        this.voltage = bikeSession.Voltage;
+                        lblVoltage.Content = string.Format("Voltage: {0} Watt", bikeSession.GetVoltage().ToString());
+                        this.voltage = bikeSession.GetVoltage();
                         break;
                     case HearthDataMessage hearthDataMessage:
                         lblHearthRate.Content = string.Format("Hartslag {0} bpm", bikeSession.GetHearthBeats().ToString());
