@@ -1,6 +1,8 @@
 ﻿using IPR_LIB;
 using LiveCharts;
 using LiveCharts.Defaults;
+using LiveCharts.WinForms;
+using LiveCharts.Wpf;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,12 +15,33 @@ namespace IPR_CLIENT
         private Patient currentPatient;
         (int, int, int) a;
         BikeHandler Bhandler = new BikeHandler();
-
+        private ChartValues<ObservableValue> ChartBPM = new ChartValues<ObservableValue>();
+        private ChartValues<ObservableValue> ChartRPM = new ChartValues<ObservableValue>();
+        private ChartValues<ObservableValue> ChartVoltage = new ChartValues<ObservableValue>();
         public TrainingPanel()
         {
             InitializeComponent();
             Bhandler.StartConnection();
+            LiveCharts.WinForms.CartesianChart cc = new LiveCharts.WinForms.CartesianChart();
+            cc.Series = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "BPM",
+                    Values = ChartBPM
+                },
+                new LineSeries
+                {
+                    Title = "RPM",
+                    Values = ChartRPM
+                },
+                new LineSeries
+                {
+                    Title = "Voltage",
+                    Values = ChartVoltage
+                }
 
+            };
         }
 
         public void Start(Patient p)
@@ -35,8 +58,11 @@ namespace IPR_CLIENT
                     UpdateGUI();
                     //for Vo2
                     currentPatient.CurrentRPM = a.Item1;
+                    ChartRPM.Add(new ObservableValue(a.Item1));
                     currentPatient.CurrentBPM = a.Item2;
+                    ChartBPM.Add(new ObservableValue(a.Item2));
                     currentPatient.voltage = a.Item3;
+                    ChartVoltage.Add(new ObservableValue(a.Item3));
                     //for history
                     currentPatient.Voltages.Add(a.Item3);
                     currentPatient.Resistance.Add(Bhandler.CurrentResistance);
