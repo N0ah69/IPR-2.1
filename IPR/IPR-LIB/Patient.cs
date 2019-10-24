@@ -5,10 +5,10 @@ namespace IPR_LIB
 {
     public class Patient
     {
-        private string Name;
-        private int Age;
-        private int Weight;
-        private Config.Gender Gender;
+        public string Name;
+        public int Age;
+        public int Weight;
+        public Config.Gender Gender;
         public ObservableCollection<int> HeartRate;
         public ObservableCollection<int> RPMHistory;
         public ObservableCollection<double> Resistance;
