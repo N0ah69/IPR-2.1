@@ -7,7 +7,7 @@
     <ProjectGuid>{B6F59447-62B1-4E24-A37F-FBA73500C66F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>IPR_CLIENT</RootNamespace>
-    <AssemblyName>IPR_CLIENT</AssemblyName>
+    <AssemblyName>IPR-CLIENT</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -75,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IPR-LIB\IPR-LIB.csproj">
+      <Project>{c32653ce-6a41-416b-b4cc-cf469d4edd82}</Project>
+      <Name>IPR-LIB</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
