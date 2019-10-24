@@ -36,10 +36,11 @@
             this.TB_Leeftijd = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.FLP_Gender = new System.Windows.Forms.FlowLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
             this.StartButton = new System.Windows.Forms.Button();
+            this.DataBaseButton = new System.Windows.Forms.Button();
             this.FLP_Gender.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,15 +113,6 @@
             this.FLP_Gender.Size = new System.Drawing.Size(116, 26);
             this.FLP_Gender.TabIndex = 7;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 69);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Geslacht:";
-            // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
@@ -143,6 +135,15 @@
             this.radioButton2.Text = "Vrouw";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 69);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Geslacht:";
+            // 
             // StartButton
             // 
             this.StartButton.Location = new System.Drawing.Point(12, 193);
@@ -153,11 +154,22 @@
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
+            // DataBaseButton
+            // 
+            this.DataBaseButton.Location = new System.Drawing.Point(655, 194);
+            this.DataBaseButton.Name = "DataBaseButton";
+            this.DataBaseButton.Size = new System.Drawing.Size(89, 22);
+            this.DataBaseButton.TabIndex = 10;
+            this.DataBaseButton.Text = "Previous Data";
+            this.DataBaseButton.UseVisualStyleBackColor = true;
+            this.DataBaseButton.Click += new System.EventHandler(this.DataBaseButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(766, 227);
+            this.Controls.Add(this.DataBaseButton);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.FLP_Gender);
@@ -191,6 +203,7 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button StartButton;
+        private System.Windows.Forms.Button DataBaseButton;
     }
 }
 

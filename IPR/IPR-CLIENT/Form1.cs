@@ -51,5 +51,13 @@ namespace IPR_CLIENT
             if (value == "man") return (Config.Gender)Enum.Parse(typeof(Config.Gender), "Male");
             else return (Config.Gender)Enum.Parse(typeof(Config.Gender), "Female");
         }
+
+        private void DataBaseButton_Click(object sender, EventArgs e)
+        {
+            Form2 datascreen = new Form2();
+            datascreen.Show();
+            this.Hide();
+
+        }
     }
 }

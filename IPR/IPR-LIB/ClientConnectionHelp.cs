@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -6,10 +9,13 @@ using System.Threading;
 
 namespace IPR_LIB
 {
+    
     public class ClientConnectionHelp
     {
         Socket _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         string _prefix = "client!!!";
+        public string RecentInformation { get; set; } = "";
+        public ObservableCollection<string> fileNames { get; set; } = new ObservableCollection<string>();
         public void LoopConnect()
         {
             int attempts = 0;
@@ -31,13 +37,13 @@ namespace IPR_LIB
 
             
              
-            string connected = "get!!!connected//TextFile1.txt";
+            string connected = "connected!!!Hello Server!";
             byte[] buffer = Encoding.ASCII.GetBytes(connected);
             _clientSocket.Send(buffer);
 
         }
 
-        private void ReceiveMessage()
+        public void ReceiveMessage()
         {
 
             Thread receivemessages = new Thread(() =>
@@ -52,8 +58,23 @@ namespace IPR_LIB
 
                         Array.Copy(receivedBuffer, data, rec);
                         string serverresponse = Encoding.ASCII.GetString(data);
-                        string[] prefixwithmessage = serverresponse.Split(new[] { "!!!" }, StringSplitOptions.None);
-                        Console.WriteLine(serverresponse);
+                        string[] SplitData = serverresponse.Split(new[] { "!!!" }, StringSplitOptions.None);
+                        switch (SplitData[0])
+                        {
+                            case "filenames":
+                                string[] names = SplitData[1].Split(new[] { "\r\n" }, StringSplitOptions.None);
+                                foreach (string n in names)
+                                {
+                                    if (!fileNames.Contains(n))
+                                    {
+                                        fileNames.Add(n);
+                                    }
+                                }
+                                break;
+                            case "datarequest":
+                                RecentInformation = SplitData[1];
+                                break;
+                        }
                     }
                     catch (Exception e)
                     {

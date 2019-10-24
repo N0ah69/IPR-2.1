@@ -1,8 +1,8 @@
 ﻿using IPR_LIB;
 using LiveCharts;
 using LiveCharts.Defaults;
-using LiveCharts.WinForms;
-using LiveCharts.Wpf;
+using LiveCharts.WinForms;
+using LiveCharts.Wpf;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -27,24 +27,24 @@ namespace IPR_CLIENT
             InitializeComponent();
             Bhandler.StartConnection();
             LiveCharts.WinForms.CartesianChart cc = new LiveCharts.WinForms.CartesianChart();
-            cc.Series = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "BPM",
-                    Values = ChartBPM
-                },
-                new LineSeries
-                {
-                    Title = "RPM",
-                    Values = ChartRPM
-                },
-                new LineSeries
-                {
-                    Title = "Voltage",
-                    Values = ChartVoltage
-                }
-
+            cc.Series = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "BPM",
+                    Values = ChartBPM
+                },
+                new LineSeries
+                {
+                    Title = "RPM",
+                    Values = ChartRPM
+                },
+                new LineSeries
+                {
+                    Title = "Voltage",
+                    Values = ChartVoltage
+                }
+
             };
         }
 
