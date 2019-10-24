@@ -18,8 +18,6 @@ namespace IPR_CLIENT
         [STAThread]
         static void Main()
         {
-            ClientConnectionHelp CCH = new ClientConnectionHelp();
-            CCH.LoopConnect();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
