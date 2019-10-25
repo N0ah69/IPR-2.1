@@ -113,6 +113,7 @@ namespace IPR_CLIENT
         {
             Bhandler.setUpBikeConection(TB_Bike.Text);
             new Thread(new ThreadStart(doWork)).Start();
+            new Thread(new ThreadStart(Bhandler.ResistanceOnHR)).Start();
             B_start.Hide();
             TB_Bike.Enabled = false;
         }

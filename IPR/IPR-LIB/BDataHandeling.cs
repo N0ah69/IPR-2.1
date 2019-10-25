@@ -1,12 +1,12 @@
 ﻿using Avans.TI.BLE;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace IPR_LIB
 {
     public class BikeHandler
     {
+        public bool onCool;
         BLE bleBike;
         BLE bleHeart;
         private byte voltage;
@@ -15,8 +15,8 @@ namespace IPR_LIB
         public bool updated = false;
         private int lastKnownmTime { get; set; }
         public int TimeCycles { get; set; }
-        public int Time { get;  set; }
-        public int BPM { get;  set; }
+        public int Time { get; set; }
+        public int BPM { get; set; }
 
         public bool StartConnection()
         {
@@ -24,6 +24,7 @@ namespace IPR_LIB
             {
                 bleBike = new BLE();
                 bleHeart = new BLE();
+                CurrentResistance = 0;
                 Thread.Sleep(1000); // We need some time to list available devices
                 return true;
             }
@@ -83,7 +84,26 @@ namespace IPR_LIB
             updated = true;
         }
 
-        private void PowerAcumilated(byte b1,byte b2)
+        public void ResistanceOnHR()
+        {
+            while (true)
+            {
+                if (onCool) break;
+                else if (BPM < 130 && CurrentResistance < 100)
+                {
+                    CurrentResistance += 0.05;
+                    setResistance(CurrentResistance);
+                }
+                else if (BPM > 130 && CurrentResistance > 0)
+                {
+                    CurrentResistance -= 0.05;
+                    setResistance(CurrentResistance);
+                }
+                Thread.Sleep(5000);
+            }
+        }
+
+        private void PowerAcumilated(byte b1, byte b2)
         {
             voltage = (byte)((((byte)b1 << 8) | ((byte)b2)));
         }
@@ -95,7 +115,7 @@ namespace IPR_LIB
             lastKnownmTime = v;
         }
 
-    
+
         public void setResistance(double percentage)
         {
             CurrentResistance = percentage;
@@ -108,7 +128,7 @@ namespace IPR_LIB
             output[2] = 0x4E; // Message type
             output[3] = 0x05; // Message type
             output[4] = 0x30; // Data Type
-            output[11] = (byte)(percentage*2);
+            output[11] = (byte)(percentage * 2);
             output[12] = (byte)BitConverter.ToInt32(crc32.ComputeHash(output), 0);
             bleBike.WriteCharacteristic("6e40fec3-b5a3-f393-e0a9-e50e24dcca9e", output);
         }
@@ -118,12 +138,12 @@ namespace IPR_LIB
             return (Rpm, Time, voltage);
         }
 
-        public string FormatedTime() 
+        public string FormatedTime()
         {
             double totalsec = Time / 4;
 
             int sec = (int)totalsec % 60; ;
-            int min = (int)totalsec/60;
+            int min = (int)totalsec / 60;
             return $"{min}:{sec}";
         }
     }
