@@ -17,6 +17,7 @@ namespace IPR_CLIENT
             if (ValidateLogIn(ref p))
             {
                 TrainingPanel t = new TrainingPanel();
+                t.Start(p);
                 t.Show();
                 this.Hide();
             }

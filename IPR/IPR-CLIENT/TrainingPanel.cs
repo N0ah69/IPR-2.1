@@ -96,7 +96,7 @@ namespace IPR_CLIENT
                 }
                 Thread.Sleep(1);
             }
-            new Results().Show();
+            new Results(p).Show();
         }
 
         private void UpdateGUI()

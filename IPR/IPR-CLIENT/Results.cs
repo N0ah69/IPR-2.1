@@ -18,7 +18,7 @@ namespace IPR_CLIENT
         {
             InitializeComponent();
         }
-        public void Start(Patient p) 
+        public Results(Patient p) 
         {
             this.p = p;
             label1.Text = p.Vo2Calculator().ToString();
