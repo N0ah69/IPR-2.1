@@ -1,7 +1,6 @@
 ﻿using IPR_LIB;
 using LiveCharts;
 using LiveCharts.Defaults;
-using LiveCharts.WinForms;
 using LiveCharts.Wpf;
 using System;
 using System.Threading;
@@ -87,7 +86,7 @@ namespace IPR_CLIENT
                         Bhandler.Time = 0;
                         testStarted = true;
                     }
-                    else if (Bhandler.Time == 60 && !coolingDown) 
+                    else if (Bhandler.Time == 60 && !coolingDown)
                     {
                         TestStatLabel.Text = "Test Finished";
                         coolingDown = true;
@@ -96,7 +95,7 @@ namespace IPR_CLIENT
                 }
                 Thread.Sleep(1);
             }
-            new Results(p).Show();
+            new Results(currentPatient).Show();
         }
 
         private void UpdateGUI()

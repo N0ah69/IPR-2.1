@@ -31,7 +31,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.TB_Naam = new System.Windows.Forms.TextBox();
-            this.TB_Gewicht = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TB_Leeftijd = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -41,6 +40,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.StartButton = new System.Windows.Forms.Button();
             this.DataBaseButton = new System.Windows.Forms.Button();
+            this.TB_Gewicht = new System.Windows.Forms.TextBox();
+            this.TB_Error = new System.Windows.Forms.Label();
             this.FLP_Gender.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,15 +70,6 @@
             this.TB_Naam.Name = "TB_Naam";
             this.TB_Naam.Size = new System.Drawing.Size(301, 20);
             this.TB_Naam.TabIndex = 2;
-            // 
-            // TB_Gewicht
-            // 
-            this.TB_Gewicht.Location = new System.Drawing.Point(12, 130);
-            this.TB_Gewicht.Name = "TB_Gewicht";
-            this.TB_Gewicht.Size = new System.Drawing.Size(38, 20);
-            this.TB_Gewicht.TabIndex = 4;
-            this.TB_Gewicht.UseSystemPasswordChar = true;
-            this.TB_Gewicht.WordWrap = false;
             // 
             // label3
             // 
@@ -164,18 +156,34 @@
             this.DataBaseButton.UseVisualStyleBackColor = true;
             this.DataBaseButton.Click += new System.EventHandler(this.DataBaseButton_Click);
             // 
+            // TB_Gewicht
+            // 
+            this.TB_Gewicht.Location = new System.Drawing.Point(12, 130);
+            this.TB_Gewicht.Name = "TB_Gewicht";
+            this.TB_Gewicht.Size = new System.Drawing.Size(38, 20);
+            this.TB_Gewicht.TabIndex = 11;
+            // 
+            // TB_Error
+            // 
+            this.TB_Error.AutoSize = true;
+            this.TB_Error.Location = new System.Drawing.Point(94, 202);
+            this.TB_Error.Name = "TB_Error";
+            this.TB_Error.Size = new System.Drawing.Size(0, 13);
+            this.TB_Error.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(766, 227);
+            this.Controls.Add(this.TB_Error);
+            this.Controls.Add(this.TB_Gewicht);
             this.Controls.Add(this.DataBaseButton);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.FLP_Gender);
             this.Controls.Add(this.TB_Leeftijd);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.TB_Gewicht);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TB_Naam);
             this.Controls.Add(this.label2);
@@ -194,7 +202,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TB_Naam;
-        private System.Windows.Forms.TextBox TB_Gewicht;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox TB_Leeftijd;
         private System.Windows.Forms.Label label4;
@@ -204,6 +211,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Button DataBaseButton;
+        private System.Windows.Forms.TextBox TB_Gewicht;
+        private System.Windows.Forms.Label TB_Error;
     }
 }
 

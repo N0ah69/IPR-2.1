@@ -36,6 +36,7 @@ namespace IPR_CLIENT
             }
             catch
             {
+                TB_Error.Text = "Error, voer fatsoenlijke data in!";
                 return false;
             }
         }
