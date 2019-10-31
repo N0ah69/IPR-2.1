@@ -66,7 +66,7 @@ namespace IPR_LIB
 
         private void HandlePayload(byte[] dat)
         {
-            if (dat.Length >= 4)
+            if (dat.Length > 4)
             {
                 String stringData = BitConverter.ToString(dat);
                 if (stringData.Substring(0, 2).Equals("16"))

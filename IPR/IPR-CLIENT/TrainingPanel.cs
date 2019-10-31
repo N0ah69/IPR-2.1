@@ -48,9 +48,31 @@ namespace IPR_CLIENT
                     Values = ChartVoltage
                 }
             };
-            cc.Series = sc;
-            C_Data = cc;
+            C_Data.Series = sc;
 
+            cc.AxisX.Add(new Axis
+            {
+                Title = "Time",
+                Labels = new[] { "test", "test1", "test2" }
+            });
+
+            C_Data.AxisY.Add(new Axis
+            {
+                Title = "Values",
+                MinValue = 0
+            });
+
+            cc.LegendLocation = LegendLocation.Right;
+            cc.DataClick += CartesianChart1OnDataClick;
+
+            
+            
+
+        }
+
+        private void CartesianChart1OnDataClick(object sender, ChartPoint chartPoint)
+        {
+            MessageBox.Show("You clicked (" + chartPoint.X + "," + chartPoint.Y + ")");
         }
 
         public void Start(Patient p)
@@ -74,8 +96,7 @@ namespace IPR_CLIENT
                     ChartBPM.Add(new ObservableValue(a.Item2));
                     currentPatient.voltage = a.Item3;
                     ChartVoltage.Add(new ObservableValue(a.Item3));
-                    cc.Update();
-                    C_Data.Update();
+                    this.BeginInvoke((Action)delegate () { C_Data.Update(); });
 
                     //for history
                     currentPatient.Voltages.Add(a.Item3);
