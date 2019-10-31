@@ -12,11 +12,12 @@ namespace IPR_CLIENT
     public partial class TrainingPanel : Form
     {
         private Patient currentPatient;
-        (int, int, int) a;
+        (double, int, int) a;
         BikeHandler Bhandler = new BikeHandler();
-        private ChartValues<ObservableValue> ChartBPM = new ChartValues<ObservableValue>();
-        private ChartValues<ObservableValue> ChartRPM = new ChartValues<ObservableValue>();
-        private ChartValues<ObservableValue> ChartVoltage = new ChartValues<ObservableValue>();
+        private ChartValues<ObservableValue> ChartBPM;
+        private ChartValues<ObservableValue> ChartRPM;
+        private ChartValues<ObservableValue> ChartVoltage;
+        private LiveCharts.WinForms.CartesianChart cc;
         private bool warmedup;
         private bool testStarted;
         private bool coolingDown;
@@ -25,8 +26,11 @@ namespace IPR_CLIENT
         {
             InitializeComponent();
             Bhandler.StartConnection();
-            LiveCharts.WinForms.CartesianChart cc = new LiveCharts.WinForms.CartesianChart();
-            cc.Series = new SeriesCollection
+            cc = new LiveCharts.WinForms.CartesianChart();
+            ChartBPM = new ChartValues<ObservableValue>();
+            ChartRPM = new ChartValues<ObservableValue>();
+            ChartVoltage = new ChartValues<ObservableValue>();
+            SeriesCollection sc = new SeriesCollection
             {
                 new LineSeries
                 {
@@ -43,8 +47,10 @@ namespace IPR_CLIENT
                     Title = "Voltage",
                     Values = ChartVoltage
                 }
-
             };
+            cc.Series = sc;
+            C_Data = cc;
+
         }
 
         public void Start(Patient p)
@@ -53,7 +59,7 @@ namespace IPR_CLIENT
         }
         private void doWork()
         {
-            TestStatLabel.Text = "Warm-Up";
+            this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Warm-Up"; });
             while (true)
             {
                 if (Bhandler.updated)
@@ -68,6 +74,9 @@ namespace IPR_CLIENT
                     ChartBPM.Add(new ObservableValue(a.Item2));
                     currentPatient.voltage = a.Item3;
                     ChartVoltage.Add(new ObservableValue(a.Item3));
+                    cc.Update();
+                    C_Data.Update();
+
                     //for history
                     currentPatient.Voltages.Add(a.Item3);
                     currentPatient.Resistance.Add(Bhandler.CurrentResistance);
@@ -76,19 +85,19 @@ namespace IPR_CLIENT
 
                     if (Bhandler.Time == 120 && !warmedup)
                     {
-                        TestStatLabel.Text = "Testing";
+                        this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Testing"; });
                         Bhandler.Time = 0;
                         warmedup = true;
                     }
                     else if (Bhandler.Time == 240 && !testStarted)
                     {
-                        TestStatLabel.Text = "Cooling Down";
+                        this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Cooling Down"; });
                         Bhandler.Time = 0;
                         testStarted = true;
                     }
                     else if (Bhandler.Time == 60 && !coolingDown)
                     {
-                        TestStatLabel.Text = "Test Finished";
+                        this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Test Finished"; });
                         coolingDown = true;
                         break;
                     }
@@ -120,9 +129,12 @@ namespace IPR_CLIENT
 
         private void SpeedHandler()
         {
-            if (currentPatient.CurrentRPM > 63) StatusLabel.Text = $"Fiets wat rustiger je gaat {currentPatient.CurrentRPM - 60} RPM te snel!";
-            else if (currentPatient.CurrentRPM < 57) StatusLabel.Text = $"Fiets wat rustiger je gaat {60 - currentPatient.CurrentRPM} RPM te te langzaam!";
-            else StatusLabel.Text = $"Ga zo door let wel op je snelheid!";
+            if (currentPatient.CurrentRPM > 63) this.BeginInvoke((Action)delegate () { StatusLabel.Text = $"Fiets wat rustiger je gaat {currentPatient.CurrentRPM - 60} RPM te snel!"; });
+            else if (currentPatient.CurrentRPM < 57) this.BeginInvoke((Action)delegate () { StatusLabel.Text = $"Fiets wat rustiger je gaat {60 - currentPatient.CurrentRPM} RPM te te langzaam!"; });
+            else this.BeginInvoke((Action)delegate ()
+            {
+                StatusLabel.Text = $"Ga zo door let wel op je snelheid!";
+            });
         }
 
     }

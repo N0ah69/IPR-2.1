@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace IPR_LIB
 {
@@ -10,10 +9,10 @@ namespace IPR_LIB
         public int Weight;
         public Config.Gender Gender;
         public ObservableCollection<int> HeartRate;
-        public ObservableCollection<int> RPMHistory;
+        public ObservableCollection<double> RPMHistory;
         public ObservableCollection<double> Resistance;
         public int CurrentBPM { set; get; }
-        public int CurrentRPM { set; get; }
+        public double CurrentRPM { set; get; }
         public ObservableCollection<double> Voltages;
         public int voltage;
 
@@ -24,7 +23,7 @@ namespace IPR_LIB
             this.Weight = weight;
             this.HeartRate = new ObservableCollection<int>();
             this.Resistance = new ObservableCollection<double>();
-            this.RPMHistory = new ObservableCollection<int>();
+            this.RPMHistory = new ObservableCollection<double>();
             this.Voltages = new ObservableCollection<double>();
         }
         private double correction(int Age)
@@ -97,4 +96,3 @@ namespace IPR_LIB
         }
     }
 }
-

@@ -11,7 +11,7 @@ namespace IPR_LIB
         BLE bleHeart;
         private byte voltage;
         public double CurrentResistance;
-        public int Rpm { get; private set; }
+        public double Rpm { get; private set; }
         public bool updated = false;
         private int lastKnownmTime { get; set; }
         public int TimeCycles { get; set; }
@@ -66,22 +66,28 @@ namespace IPR_LIB
 
         private void HandlePayload(byte[] dat)
         {
-            if (dat.Length <= 4)
+            if (dat.Length >= 4)
             {
-                BPM = dat[2];
-            }
-            else
-                switch (dat[4])
+                String stringData = BitConverter.ToString(dat);
+                if (stringData.Substring(0, 2).Equals("16"))
                 {
-                    case 0x10:
-                        AddTimeElapsed(dat[6]);
-                        break;
-                    case 0x19:
-                        voltage = (byte)((((byte)dat[7] << 8) | ((byte)dat[8])));
-                        Rpm = dat[6];
-                        break;
+                    BPM = Convert.ToInt32(stringData.Substring(3, 2), 16);
                 }
-            updated = true;
+
+                else
+                    switch (dat[4])
+                    {
+                        case 0x10:
+                            AddTimeElapsed(dat[6]);
+                            break;
+                        case 0x19:
+                            voltage = (byte)((((byte)dat[7] << 8) | ((byte)dat[8])));
+                            Rpm = dat[6];
+                            Console.WriteLine(dat[6]);
+                            break;
+                    }
+                updated = true;
+            }
         }
 
         public void ResistanceOnHR()
@@ -111,7 +117,7 @@ namespace IPR_LIB
         private void AddTimeElapsed(int v)
         {
             if (Time < lastKnownmTime) TimeCycles++;
-            Rpm = TimeCycles * 255 + v;
+            Time = TimeCycles * 255 + v;
             lastKnownmTime = v;
         }
 
@@ -132,10 +138,10 @@ namespace IPR_LIB
             output[12] = (byte)BitConverter.ToInt32(crc32.ComputeHash(output), 0);
             bleBike.WriteCharacteristic("6e40fec3-b5a3-f393-e0a9-e50e24dcca9e", output);
         }
-        public (int, int, int) Update()
+        public (double, int, int) Update()
         {
             updated = false;
-            return (Rpm, Time, voltage);
+            return (Rpm, BPM, voltage);
         }
 
         public string FormatedTime()
