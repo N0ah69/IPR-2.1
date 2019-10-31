@@ -21,10 +21,12 @@ namespace IPR_CLIENT
         private bool warmedup;
         private bool testStarted;
         private bool coolingDown;
+        private IPR_LIB.Timer timer;
 
         public TrainingPanel()
         {
             InitializeComponent();
+            timer = new IPR_LIB.Timer();
             Bhandler.StartConnection();
             cc = new LiveCharts.WinForms.CartesianChart();
             ChartBPM = new ChartValues<ObservableValue>();
@@ -82,10 +84,12 @@ namespace IPR_CLIENT
         private void doWork()
         {
             this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Warm-Up"; });
+            timer.StartTimer();
             while (true)
             {
                 if (Bhandler.updated)
                 {
+
                     a = Bhandler.Update();
                     UpdateGUI();
                     SpeedHandler();
@@ -104,21 +108,22 @@ namespace IPR_CLIENT
                     currentPatient.HeartRate.Add(Bhandler.BPM);
                     currentPatient.RPMHistory.Add(Bhandler.Rpm);
 
-                    if (Bhandler.Time == 120 && !warmedup)
+                    if (timer.min == 2 && !warmedup)
                     {
                         this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Testing"; });
-                        Bhandler.Time = 0;
+                        timer.Reset();
                         warmedup = true;
                     }
-                    else if (Bhandler.Time == 240 && !testStarted)
+                    else if (timer.min == 4 && !testStarted)
                     {
                         this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Cooling Down"; });
-                        Bhandler.Time = 0;
+                        timer.Reset();
                         testStarted = true;
                     }
-                    else if (Bhandler.Time == 60 && !coolingDown)
+                    else if (timer.min == 1 && !coolingDown)
                     {
                         this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Test Finished"; });
+                        timer.Stop();
                         coolingDown = true;
                         break;
                     }
