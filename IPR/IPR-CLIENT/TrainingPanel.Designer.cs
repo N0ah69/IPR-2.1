@@ -31,20 +31,21 @@
             this.label1 = new System.Windows.Forms.Label();
             this.B_start = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.TestStatLabel = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.C_Data = new LiveCharts.WinForms.CartesianChart();
             this.TimeLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.StatusLabel = new System.Windows.Forms.Label();
-            this.Voltage = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.HR = new System.Windows.Forms.Label();
             this.speed = new System.Windows.Forms.Label();
             this.TB_Bike = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label6 = new System.Windows.Forms.Label();
-            this.TestStatLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Label_Resistance = new System.Windows.Forms.Label();
+            this.b_results = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,14 +70,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.Label_Resistance);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.TestStatLabel);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.C_Data);
             this.groupBox1.Controls.Add(this.TimeLabel);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.StatusLabel);
-            this.groupBox1.Controls.Add(this.Voltage);
-            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.HR);
@@ -87,6 +88,26 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TestData";
+            // 
+            // TestStatLabel
+            // 
+            this.TestStatLabel.AutoSize = true;
+            this.TestStatLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestStatLabel.Location = new System.Drawing.Point(459, 53);
+            this.TestStatLabel.Name = "TestStatLabel";
+            this.TestStatLabel.Size = new System.Drawing.Size(233, 37);
+            this.TestStatLabel.TabIndex = 11;
+            this.TestStatLabel.Text = "Waiting to start";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(462, 29);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 24);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Status:";
             // 
             // C_Data
             // 
@@ -126,26 +147,6 @@
             this.StatusLabel.TabIndex = 6;
             this.StatusLabel.Text = "Begin met fietsen. Probeer de RPM op 60 te houden,\r\n want het word zwaarder!\r\n\r\n\r" +
     "\n";
-            // 
-            // Voltage
-            // 
-            this.Voltage.AutoSize = true;
-            this.Voltage.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Voltage.Location = new System.Drawing.Point(203, 90);
-            this.Voltage.Name = "Voltage";
-            this.Voltage.Size = new System.Drawing.Size(100, 37);
-            this.Voltage.TabIndex = 5;
-            this.Voltage.Text = "NULL";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 90);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(135, 37);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Voltage:";
             // 
             // label3
             // 
@@ -194,31 +195,42 @@
             this.TB_Bike.Size = new System.Drawing.Size(73, 20);
             this.TB_Bike.TabIndex = 4;
             // 
-            // label6
+            // label4
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(462, 29);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 24);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Status:";
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(6, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(181, 37);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Weerstand:";
             // 
-            // TestStatLabel
+            // Label_Resistance
             // 
-            this.TestStatLabel.AutoSize = true;
-            this.TestStatLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestStatLabel.Location = new System.Drawing.Point(459, 53);
-            this.TestStatLabel.Name = "TestStatLabel";
-            this.TestStatLabel.Size = new System.Drawing.Size(233, 37);
-            this.TestStatLabel.TabIndex = 11;
-            this.TestStatLabel.Text = "Waiting to start";
+            this.Label_Resistance.AutoSize = true;
+            this.Label_Resistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Resistance.Location = new System.Drawing.Point(203, 90);
+            this.Label_Resistance.Name = "Label_Resistance";
+            this.Label_Resistance.Size = new System.Drawing.Size(100, 37);
+            this.Label_Resistance.TabIndex = 13;
+            this.Label_Resistance.Text = "NULL";
+            // 
+            // b_results
+            // 
+            this.b_results.Location = new System.Drawing.Point(68, 468);
+            this.b_results.Name = "b_results";
+            this.b_results.Size = new System.Drawing.Size(75, 23);
+            this.b_results.TabIndex = 5;
+            this.b_results.Text = "Results";
+            this.b_results.UseVisualStyleBackColor = true;
+            this.b_results.Click += new System.EventHandler(this.B_results_Click);
             // 
             // TrainingPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(938, 571);
+            this.Controls.Add(this.b_results);
             this.Controls.Add(this.TB_Bike);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.B_start);
@@ -241,8 +253,6 @@
         private System.Windows.Forms.TextBox TB_Bike;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label Voltage;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label StatusLabel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private LiveCharts.WinForms.CartesianChart C_Data;
@@ -250,5 +260,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label TestStatLabel;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label Label_Resistance;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button b_results;
     }
 }

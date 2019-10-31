@@ -13,6 +13,8 @@ namespace IPR_LIB
         public double CurrentResistance;
         public double Rpm { get; private set; }
         public bool updated = false;
+        public bool coolingdown { get; set; }
+
         private int lastKnownmTime { get; set; }
         public int TimeCycles { get; set; }
         public int Time { get; set; }
@@ -73,17 +75,12 @@ namespace IPR_LIB
                 {
                     BPM = Convert.ToInt32(stringData.Substring(3, 2), 16);
                 }
-
                 else
                     switch (dat[4])
                     {
-                        case 0x10:
-                            AddTimeElapsed(dat[6]);
-                            break;
                         case 0x19:
                             voltage = (byte)((((byte)dat[7] << 8) | ((byte)dat[8])));
                             Rpm = dat[6];
-                            Console.WriteLine(dat[6]);
                             break;
                     }
                 updated = true;
@@ -97,16 +94,17 @@ namespace IPR_LIB
                 if (onCool) break;
                 else if (BPM < 130 && CurrentResistance < 100)
                 {
-                    CurrentResistance += 0.05;
+                    CurrentResistance += 0.5;
                     setResistance(CurrentResistance);
                 }
                 else if (BPM > 130 && CurrentResistance > 0)
                 {
-                    CurrentResistance -= 0.05;
+                    CurrentResistance -= 0.5;
                     setResistance(CurrentResistance);
                 }
                 Thread.Sleep(5000);
             }
+            setResistance(0);
         }
 
         private void PowerAcumilated(byte b1, byte b2)
@@ -144,13 +142,5 @@ namespace IPR_LIB
             return (Rpm, BPM, voltage);
         }
 
-        public string FormatedTime()
-        {
-            double totalsec = Time / 4;
-
-            int sec = (int)totalsec % 60; ;
-            int min = (int)totalsec / 60;
-            return $"{min}:{sec}";
-        }
     }
 }

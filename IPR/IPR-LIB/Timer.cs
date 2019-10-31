@@ -17,13 +17,14 @@ namespace IPR_LIB
         public void StartTimer()
         {
             timerThread = new Thread(new ThreadStart(DoWork));
+            timerThread.Start();
         }
 
         private void DoWork()
         {
             while (true)
             {
-                if (sec > 59)
+                if (sec >= 59)
                 {
                     sec = 0;
                     min++;

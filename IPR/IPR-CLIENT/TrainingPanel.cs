@@ -22,6 +22,7 @@ namespace IPR_CLIENT
         private bool testStarted;
         private bool coolingDown;
         private IPR_LIB.Timer timer;
+        private Results results;
 
         public TrainingPanel()
         {
@@ -43,19 +44,14 @@ namespace IPR_CLIENT
                 {
                     Title = "RPM",
                     Values = ChartRPM
-                },
-                new LineSeries
-                {
-                    Title = "Voltage",
-                    Values = ChartVoltage
                 }
             };
             C_Data.Series = sc;
 
-            cc.AxisX.Add(new Axis
+            C_Data.AxisX.Add(new Axis
             {
-                Title = "Time",
-                Labels = new[] { "test", "test1", "test2" }
+                Title = "Measurement",
+
             });
 
             C_Data.AxisY.Add(new Axis
@@ -67,8 +63,8 @@ namespace IPR_CLIENT
             cc.LegendLocation = LegendLocation.Right;
             cc.DataClick += CartesianChart1OnDataClick;
 
-            
-            
+
+
 
         }
 
@@ -83,13 +79,15 @@ namespace IPR_CLIENT
         }
         private void doWork()
         {
-            this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Warm-Up"; });
             timer.StartTimer();
+            this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Warm-Up"; });
             while (true)
             {
                 if (Bhandler.updated)
                 {
-
+                    if (ChartBPM.Count > 50) ChartBPM.RemoveAt(0);
+                    if (ChartRPM.Count > 50) ChartRPM.RemoveAt(0);
+                    if (ChartVoltage.Count > 50) ChartVoltage.RemoveAt(0);
                     a = Bhandler.Update();
                     UpdateGUI();
                     SpeedHandler();
@@ -114,13 +112,14 @@ namespace IPR_CLIENT
                         timer.Reset();
                         warmedup = true;
                     }
-                    else if (timer.min == 4 && !testStarted)
+                    else if (timer.min == 4 && warmedup && !testStarted)
                     {
                         this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Cooling Down"; });
                         timer.Reset();
                         testStarted = true;
+                        Bhandler.onCool = true;
                     }
-                    else if (timer.min == 1 && !coolingDown)
+                    else if (timer.min == 1 && testStarted && !coolingDown)
                     {
                         this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Test Finished"; });
                         timer.Stop();
@@ -130,7 +129,6 @@ namespace IPR_CLIENT
                 }
                 Thread.Sleep(1);
             }
-            new Results(currentPatient).Show();
         }
 
         private void UpdateGUI()
@@ -139,8 +137,8 @@ namespace IPR_CLIENT
             {
                 speed.Text = a.Item1.ToString();
                 HR.Text = a.Item2.ToString();
-                Voltage.Text = a.Item3.ToString();
-                TimeLabel.Text = Bhandler.FormatedTime();
+                TimeLabel.Text = timer.GetTime();
+                Label_Resistance.Text = Bhandler.CurrentResistance.ToString();
             });
         }
 
@@ -156,12 +154,17 @@ namespace IPR_CLIENT
         private void SpeedHandler()
         {
             if (currentPatient.CurrentRPM > 63) this.BeginInvoke((Action)delegate () { StatusLabel.Text = $"Fiets wat rustiger je gaat {currentPatient.CurrentRPM - 60} RPM te snel!"; });
-            else if (currentPatient.CurrentRPM < 57) this.BeginInvoke((Action)delegate () { StatusLabel.Text = $"Fiets wat rustiger je gaat {60 - currentPatient.CurrentRPM} RPM te te langzaam!"; });
+            else if (currentPatient.CurrentRPM < 57) this.BeginInvoke((Action)delegate () { StatusLabel.Text = $"Fiets wat harder je gaat {60 - currentPatient.CurrentRPM} RPM te te langzaam!"; });
             else this.BeginInvoke((Action)delegate ()
             {
                 StatusLabel.Text = $"Ga zo door let wel op je snelheid!";
             });
         }
 
+        private void B_results_Click(object sender, EventArgs e)
+        {
+            results = new Results(currentPatient);
+            results.Show();
+        }
     }
 }
