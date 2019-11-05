@@ -116,7 +116,10 @@ namespace IPR_CLIENT
             {
                 this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Test Finished"; });
                 timer.Pause();
-                b_results.Enabled = true;
+                BeginInvoke((Action)delegate ()
+                {
+                    b_results.Enabled = true;
+                });
                 testDone = true;
             }
         }
