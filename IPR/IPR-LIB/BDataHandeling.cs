@@ -13,12 +13,7 @@ namespace IPR_LIB
         public double CurrentResistance;
         public double Rpm { get; private set; }
         public bool updated = false;
-        public bool coolingdown { get; set; }
-
-        private int lastKnownmTime { get; set; }
-        public int TimeCycles { get; set; }
-        public int Time { get; set; }
-        public int BPM { get; set; }
+        public int BPM { get; private set; }
 
         public bool StartConnection()
         {
@@ -38,7 +33,6 @@ namespace IPR_LIB
             int errorCode = 0;
             // Connecting
             errorCode = errorCode = await bleBike.OpenDevice("Tacx Flux " + bike);
-            // __TODO__ Error check
 
             var services = bleBike.GetServices;
             foreach (var service in services)
@@ -47,7 +41,6 @@ namespace IPR_LIB
             }
             // Set service
             errorCode = await bleBike.SetService("6e40fec1-b5a3-f393-e0a9-e50e24dcca9e");
-            // __TODO__ error check
 
             // Subscribe
             bleBike.SubscriptionValueChanged += BleBike_SubscriptionValueChanged;
@@ -61,6 +54,7 @@ namespace IPR_LIB
             bleHeart.SubscriptionValueChanged += BleBike_SubscriptionValueChanged;
             await bleHeart.SubscribeToCharacteristic("HeartRateMeasurement");
         }
+
         private void BleBike_SubscriptionValueChanged(object sender, BLESubscriptionValueChangedEventArgs e)
         {
             HandlePayload(e.Data);
@@ -79,7 +73,7 @@ namespace IPR_LIB
                     switch (dat[4])
                     {
                         case 0x19:
-                            voltage = (byte)((((byte)dat[7] << 8) | ((byte)dat[8])));
+                            voltage = (byte)((((byte)dat[8] << 8) | ((byte)dat[7])));
                             Rpm = dat[6];
                             break;
                     }
@@ -106,19 +100,6 @@ namespace IPR_LIB
             }
             setResistance(0);
         }
-
-        private void PowerAcumilated(byte b1, byte b2)
-        {
-            voltage = (byte)((((byte)b1 << 8) | ((byte)b2)));
-        }
-
-        private void AddTimeElapsed(int v)
-        {
-            if (Time < lastKnownmTime) TimeCycles++;
-            Time = TimeCycles * 255 + v;
-            lastKnownmTime = v;
-        }
-
 
         public void setResistance(double percentage)
         {

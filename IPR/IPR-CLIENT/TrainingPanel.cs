@@ -11,24 +11,31 @@ namespace IPR_CLIENT
 {
     public partial class TrainingPanel : Form
     {
-        private Patient currentPatient;
-        (double, int, int) a;
+        //for data handling
+        Patient currentPatient;
         BikeHandler Bhandler = new BikeHandler();
-        private ChartValues<ObservableValue> ChartBPM;
-        private ChartValues<ObservableValue> ChartRPM;
-        private ChartValues<ObservableValue> ChartVoltage;
-        private LiveCharts.WinForms.CartesianChart cc;
-        private bool warmedup;
-        private bool testStarted;
-        private bool coolingDown;
-        private IPR_LIB.Timer timer;
-        private Results results;
+        //charts
+        ChartValues<ObservableValue> ChartBPM;
+        ChartValues<ObservableValue> ChartRPM;
+        ChartValues<ObservableValue> ChartVoltage;
+        LiveCharts.WinForms.CartesianChart cc;
+        //timer
+        IPR_LIB.Timer timer;
+        //band-aid bools
+        bool warmedup;
+        bool testStarted;
 
-        public TrainingPanel()
+        public TrainingPanel(Patient p)
         {
             InitializeComponent();
+
+            //init timer and set up connection bike
+            currentPatient = p;
+            b_results.Enabled = false;
             timer = new IPR_LIB.Timer();
             Bhandler.StartConnection();
+
+            //set up charts
             cc = new LiveCharts.WinForms.CartesianChart();
             ChartBPM = new ChartValues<ObservableValue>();
             ChartRPM = new ChartValues<ObservableValue>();
@@ -59,79 +66,87 @@ namespace IPR_CLIENT
                 Title = "Values",
                 MinValue = 0
             });
-
             cc.LegendLocation = LegendLocation.Right;
             cc.DataClick += CartesianChart1OnDataClick;
-
-
-
-
         }
 
-        private void CartesianChart1OnDataClick(object sender, ChartPoint chartPoint)
+        void CartesianChart1OnDataClick(object sender, ChartPoint chartPoint)
         {
             MessageBox.Show("You clicked (" + chartPoint.X + "," + chartPoint.Y + ")");
         }
 
-        public void Start(Patient p)
-        {
-            currentPatient = p;
-        }
+        // update method, might need trimming
         private void doWork()
         {
+            var testDone = false;
             timer.StartTimer();
             this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Warm-Up"; });
             while (true)
             {
+                if (testDone) break;
                 if (Bhandler.updated)
                 {
-                    if (ChartBPM.Count > 50) ChartBPM.RemoveAt(0);
-                    if (ChartRPM.Count > 50) ChartRPM.RemoveAt(0);
-                    if (ChartVoltage.Count > 50) ChartVoltage.RemoveAt(0);
-                    a = Bhandler.Update();
-                    UpdateGUI();
+                    var a = Bhandler.Update();
+                    UpdateChart();
+                    UpdateGUI(a);
                     SpeedHandler();
-                    //for Vo2
-                    currentPatient.CurrentRPM = a.Item1;
-                    ChartRPM.Add(new ObservableValue(a.Item1));
-                    currentPatient.CurrentBPM = a.Item2;
-                    ChartBPM.Add(new ObservableValue(a.Item2));
-                    currentPatient.voltage = a.Item3;
-                    ChartVoltage.Add(new ObservableValue(a.Item3));
-                    this.BeginInvoke((Action)delegate () { C_Data.Update(); });
-
-                    //for history
-                    currentPatient.Voltages.Add(a.Item3);
-                    currentPatient.Resistance.Add(Bhandler.CurrentResistance);
-                    currentPatient.HeartRate.Add(Bhandler.BPM);
-                    currentPatient.RPMHistory.Add(Bhandler.Rpm);
-
-                    if (timer.min == 2 && !warmedup)
-                    {
-                        this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Testing"; });
-                        timer.Reset();
-                        warmedup = true;
-                    }
-                    else if (timer.min == 4 && warmedup && !testStarted)
-                    {
-                        this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Cooling Down"; });
-                        timer.Reset();
-                        testStarted = true;
-                        Bhandler.onCool = true;
-                    }
-                    else if (timer.min == 1 && testStarted && !coolingDown)
-                    {
-                        this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Test Finished"; });
-                        timer.Stop();
-                        coolingDown = true;
-                        break;
-                    }
+                    UpdateData(a);
+                    HandleTimings(ref testDone);
                 }
                 Thread.Sleep(1);
             }
         }
 
-        private void UpdateGUI()
+        void HandleTimings(ref bool testDone)
+        {
+            if (timer.min == 2 && !warmedup)
+            {
+                this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Testing"; });
+                timer.Reset();
+                warmedup = true;
+            }
+            else if (timer.min == 4 && warmedup && !testStarted)
+            {
+                this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Cooling Down"; });
+                timer.Reset();
+                testStarted = true;
+                Bhandler.onCool = true;
+            }
+            else if (timer.min == 1 && testStarted)
+            {
+                this.BeginInvoke((Action)delegate () { TestStatLabel.Text = "Test Finished"; });
+                timer.Pause();
+                b_results.Enabled = true;
+                testDone = true;
+            }
+        }
+
+        void UpdateData((double, int, int) a)
+        {
+            //for Vo2
+            currentPatient.CurrentRPM = a.Item1;
+            ChartRPM.Add(new ObservableValue(a.Item1));
+            currentPatient.CurrentBPM = a.Item2;
+            ChartBPM.Add(new ObservableValue(a.Item2));
+            currentPatient.voltage = a.Item3;
+            ChartVoltage.Add(new ObservableValue(a.Item3));
+
+            //for history
+            currentPatient.Voltages.Add(a.Item3);
+            currentPatient.Resistance.Add(Bhandler.CurrentResistance);
+            currentPatient.HeartRate.Add(Bhandler.BPM);
+            currentPatient.RPMHistory.Add(Bhandler.Rpm);
+        }
+
+        void UpdateChart()
+        {
+            if (ChartBPM.Count > 50) ChartBPM.RemoveAt(0);
+            if (ChartRPM.Count > 50) ChartRPM.RemoveAt(0);
+            if (ChartVoltage.Count > 50) ChartVoltage.RemoveAt(0);
+            this.BeginInvoke((Action)delegate () { C_Data.Update(); });
+        }
+
+        void UpdateGUI((double, int, int) a)
         {
             this.BeginInvoke((Action)delegate ()
             {
@@ -142,7 +157,7 @@ namespace IPR_CLIENT
             });
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        void Button1_Click(object sender, EventArgs e)
         {
             Bhandler.setUpBikeConection(TB_Bike.Text);
             new Thread(new ThreadStart(doWork)).Start();
@@ -151,7 +166,7 @@ namespace IPR_CLIENT
             TB_Bike.Enabled = false;
         }
 
-        private void SpeedHandler()
+        void SpeedHandler()
         {
             if (currentPatient.CurrentRPM > 63) this.BeginInvoke((Action)delegate () { StatusLabel.Text = $"Fiets wat rustiger je gaat {currentPatient.CurrentRPM - 60} RPM te snel!"; });
             else if (currentPatient.CurrentRPM < 57) this.BeginInvoke((Action)delegate () { StatusLabel.Text = $"Fiets wat harder je gaat {60 - currentPatient.CurrentRPM} RPM te te langzaam!"; });
@@ -161,9 +176,9 @@ namespace IPR_CLIENT
             });
         }
 
-        private void B_results_Click(object sender, EventArgs e)
+        void B_results_Click(object sender, EventArgs e)
         {
-            results = new Results(currentPatient);
+            Results results = new Results(currentPatient);
             results.Show();
         }
     }

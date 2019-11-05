@@ -1,5 +1,4 @@
-﻿using IPR_LIB;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -19,10 +18,15 @@ namespace IPR_SERVER
 
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
             Console.Title = "IPR-SERVER";
             ReadyServer();
             Console.ReadLine();
+        }
 
+        private static void OnProcessExit(object sender, EventArgs e)
+        {
+            Environment.Exit(exitCode: 0);
         }
 
         private static void ReadyServer()
@@ -58,7 +62,7 @@ namespace IPR_SERVER
             {
                 data = Info[1];
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Empty DataMessage");
             }
@@ -81,14 +85,16 @@ namespace IPR_SERVER
                 case "save":
                     dynamic json = JsonConvert.DeserializeObject(data);
                     string filepath = getPath() + $"Logs/{(json.TimeStart as JToken).Value<string>().Replace("/", "-").Replace(":", @".")}.txt";
-                    if (!File.Exists(filepath)){
+                    if (!File.Exists(filepath))
+                    {
                         File.Create(filepath).Close();
 
                         Thread.Sleep(500);
                         TextWriter TW = new StreamWriter(filepath, false);
                         TW.WriteLine(data);
                         TW.Close();
-                    } else if(File.Exists(filepath))
+                    }
+                    else if (File.Exists(filepath))
                     {
                         using (var TW = new StreamWriter(filepath, true))
                         {

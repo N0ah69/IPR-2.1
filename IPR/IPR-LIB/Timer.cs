@@ -48,8 +48,11 @@ namespace IPR_LIB
             sec = 0;
             min = 0;
         }
-
-        public void Stop()
+        public void Resume()
+        {
+            timerThread.Start();
+        }
+        public void Pause()
         {
             timerThread.Abort();
         }

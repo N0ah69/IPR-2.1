@@ -4,11 +4,17 @@ using System.Windows.Forms;
 
 namespace IPR_CLIENT
 {
-    public partial class Form1 : Form
+    public partial class StartUp : Form
     {
-        public Form1()
+        public StartUp()
         {
             InitializeComponent();
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
+        }
+
+        private void OnProcessExit(object sender, EventArgs e)
+        {
+            Environment.Exit(exitCode: 0);
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -16,8 +22,7 @@ namespace IPR_CLIENT
             Patient p = null;
             if (ValidateLogIn(ref p))
             {
-                TrainingPanel t = new TrainingPanel();
-                t.Start(p);
+                TrainingPanel t = new TrainingPanel(p);
                 t.Show();
                 this.Hide();
             }
@@ -49,17 +54,15 @@ namespace IPR_CLIENT
                 value = radioButton1.Text;
             else
                 value = radioButton2.Text;
-
             if (value == "man") return (Config.Gender)Enum.Parse(typeof(Config.Gender), "Male");
             else return (Config.Gender)Enum.Parse(typeof(Config.Gender), "Female");
         }
 
         private void DataBaseButton_Click(object sender, EventArgs e)
         {
-            Form2 datascreen = new Form2();
+            History datascreen = new History();
             datascreen.Show();
             this.Hide();
-
         }
     }
 }
