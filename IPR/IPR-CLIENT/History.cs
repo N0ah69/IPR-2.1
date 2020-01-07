@@ -55,8 +55,16 @@ namespace IPR_CLIENT
             {
                 CCH.SendMesage("get!!!" + FileListBox.SelectedItem);
             }
-            Patient p = JsonConvert.DeserializeObject<Patient>(CCH.RecentInformation);
-            InfoLabel.Text = $"Name: {p.Name} \nAge: {p.Age} \nWeight: {p.Weight} \nGender {p.Gender.ToString()} \n";
+            Thread.Sleep(2000);
+            PatientInfo p = JsonConvert.DeserializeObject<PatientInfo>(CCH.RecentInformation);
+            try
+            {
+                InfoLabel.Text = $"Name: {p.name} \nAge: {p.age} \nWeight: {p.weight} \nGender {p.Gender.ToString()} \nVO2 {p.VO2} \n";
+            }
+            catch
+            {
+                InfoLabel.Text = "FAILED!"
+            }
         }
 
         private void TextBox1_TextChanged(object sender, EventArgs e)

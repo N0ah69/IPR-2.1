@@ -94,5 +94,12 @@ namespace IPR_LIB
                 return ((0.00212 * workload + 0.299) / (0.769 * this.CurrentBPM - 48.5) * 100) * correction(this.Age);
             }
         }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
+
+
 }

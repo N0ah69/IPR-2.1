@@ -22,8 +22,9 @@ namespace IPR_CLIENT
             Patient p = null;
             if (ValidateLogIn(ref p))
             {
-                TrainingPanel t = new TrainingPanel(p);
-                t.Show();
+                //TrainingPanel t = new TrainingPanel(p);
+                Results r = new Results(p);
+                r.Show();
                 this.Hide();
             }
         }
